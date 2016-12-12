@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<title>Allan Ramirez SMCID6402106</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+
+<body onload="show();">
+<div class="w3-content" style="max-width:1200px">
+<div class="w3-row-padding w3-center" style="padding-top: 100px">
+  <h1>FINAL PROJECT STOPWATCH</h1>
+</div>
+  <div class="w3-col m3 w3-green w3-center"><p>m3</p></div>
+  <div class="w3-col m6 w3-dark-grey w3-center">
+  <span id="time" style="color:white;font-weight:bold;font-size: 3em"></span>
+    <div class="w3-row-padding w3-section">
+      <button class="w3-btn w3-round w3-green" onclick="start()">Start</button>
+      <button class="w3-btn w3-round w3-red" onclick="stop()">Stop</button>
+      <button class="w3-btn w3-round w3-blue" onclick="reset()">Reset</button>
+    </div>
+  </div>
+  <div class="w3-col m3 w3-green w3-center"><p>m3</p></div>
+
+
+  <!--<input type="button" value="start" onclick="start();">
+  <input type="button" value="stop" onclick="stop();">
+  <input type="button" value="reset" onclick="reset()">-->
+
+</div>
+
+<script>
+//  Simple example of using private variables
+//
+//  To start the stopwatch:
+//    obj.start();
+//
+//  To get the duration in milliseconds without pausing / resuming:
+//    var x = obj.time();
+//
+//  To pause the stopwatch:
+//    var x = obj.stop(); // Result is duration in milliseconds
+//
+//  To resume a paused stopwatch
+//    var x = obj.start();  // Result is duration in milliseconds
+//
+//  To reset a paused stopwatch
+//    obj.stop();
+//
+var clsStopwatch = function() {
+    // Private vars
+    var startAt = 0;  // Time of last start / resume. (0 if not running)
+    var lapTime = 0;  // Time on the clock when last stopped in milliseconds
+
+    var now = function() {
+        return (new Date()).getTime(); 
+      }; 
+ 
+    // Public methods
+    // Start or resume
+    this.start = function() {
+        startAt = startAt ? startAt : now();
+      };
+
+    // Stop or pause
+    this.stop = function() {
+        // If running, update elapsed time otherwise keep it
+        lapTime = startAt ? lapTime + now() - startAt : lapTime;
+        startAt = 0; // Paused
+      };
+
+    // Reset
+    this.reset = function() {
+        lapTime = startAt = 0;
+      };
+
+    // Duration
+    this.time = function() {
+        return lapTime + (startAt ? now() - startAt : 0); 
+      };
+  };
+
+var x = new clsStopwatch();
+var $time;
+var clocktimer;
+
+function pad(num, size) {
+  var s = "0000" + num;
+  return s.substr(s.length - size);
+}
+
+function formatTime(time) {
+  var m = s = ms = 0;
+  var newTime = '';
+
+  time = time % (60 * 60 * 1000);
+  m = Math.floor( time / (60 * 1000) );
+  time = time % (60 * 1000);
+  s = Math.floor( time / 1000 );
+  ms = time % 1000;
+
+  newTime = pad(m, 2) + ':' + pad(s, 2) + ':' + pad(ms, 3);
+  return newTime;
+}
+
+function show() {
+  $time = document.getElementById('time');
+  update();
+}
+
+function update() {
+  $time.innerHTML = formatTime(x.time());
+}
+
+function start() {
+  clocktimer = setInterval("update()", 1);
+  x.start();
+}
+
+function stop() {
+  x.stop();
+  clearInterval(clocktimer);
+}
+
+function reset() {
+  stop();
+  x.reset();
+  update();
+}
+</script>
+
+</body>
+</html>
