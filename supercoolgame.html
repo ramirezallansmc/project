@@ -19,34 +19,26 @@
     </div>
   </div>
   <div class="w3-col m3 w3-green w3-center"><p>m3</p></div>
-
-
-  <!--<input type="button" value="start" onclick="start();">
-  <input type="button" value="stop" onclick="stop();">
-  <input type="button" value="reset" onclick="reset()">-->
-
 </div>
 
 <script>
 var clsStopwatch = function() {
-    // Private vars
-    var startAt = 0;  // Time of last start / resume. (0 if not running)
-    var lapTime = 0;  // Time on the clock when last stopped in milliseconds
+    var startAt = 0;  
+    var lapTime = 0;
 
     var now = function() {
         return (new Date()).getTime(); 
       }; 
  
-    // Start or resume
+    // Start
     this.start = function() {
         startAt = startAt ? startAt : now();
       };
 
-    // Stop or pause
+    // Stop
     this.stop = function() {
-        // If running, update elapsed time otherwise keep it
         lapTime = startAt ? lapTime + now() - startAt : lapTime;
-        startAt = 0; // Paused
+        startAt = 0;
       };
 
     // Reset
